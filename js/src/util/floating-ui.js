@@ -3,6 +3,7 @@
 //
 import { computePosition } from '@floating-ui/dom'
 import { getElement, isElement } from './index'
+import Manipulator from '../dom/manipulator'
 
 class FloatingUi {
   constructor(element) {
@@ -15,13 +16,21 @@ class FloatingUi {
 
   calculate(reference, tooltip, config, extraCss = {}) {
     computePosition(reference, tooltip, config)
-      // eslint-disable-next-line no-unused-vars
       .then(({ x, y, placement, middlewareData }) => {
         const positionCss = {
           left: `${x}px`,
           top: `${y}px`
         }
+        console.log(placement, middlewareData) // eslint-disable-line no-console
+        Manipulator.setDataAttribute(tooltip, 'placement', placement)
         Object.assign(tooltip.style, { ...positionCss, ...extraCss })
+        if (middlewareData.arrow) {
+          // Object.assign(arrow.style, {
+          //   left: `${x}px`,
+          //   top: `${y}px`
+          // })
+          console.log(middlewareData.arrow) // eslint-disable-line no-console
+        }
       })
   }
 
