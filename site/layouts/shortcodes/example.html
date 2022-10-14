@@ -7,7 +7,7 @@
     * lang: language used to display the code - default: "html"
     * show_markup: if the markup should be output in the HTML - default: `true`
     * show_preview: if the preview should be output in the HTML - default: `true`
-    * stackblitz_add_js: if extra JS snippet shoud le added to StackBlitz - default: `false`
+    * stackblitz_add_js: if extra JS snippet should be added to StackBlitz - default: `false`
 */ -}}
 
 {{- $id := .Get "id" -}}
@@ -17,6 +17,7 @@
 {{- $show_markup := .Get "show_markup" | default true -}}
 {{- $show_preview := .Get "show_preview" | default true -}}
 {{- $input := .Inner -}}
+{{- $content := .Inner -}}
 
 <div class="bd-example-snippet bd-code-snippet">
   {{- if eq $show_preview true -}}
@@ -40,7 +41,8 @@
       </div>
     {{- end -}}
 
-    {{- $content := replaceRE `<svg class="bd-placeholder-img(?:-lg)?(?: *?bd-placeholder-img-lg)? ?(.*?)".*?<\/svg>\n` `<img src="..." class="$1" alt="...">` $input -}}
+    {{- $content = replaceRE `<svg class="bd-placeholder-img(?:-lg)?(?: *?bd-placeholder-img-lg)? ?(.*?)".*?<\/svg>` `<img src="..." class="$1" alt="...">` $content -}}
+    {{- $content = replaceRE `<img class="bd-placeholder-img(?:-lg)?(?: *?bd-placeholder-img-lg)? ?(.*?)".*?>` `<img src="..." class="$1" alt="...">` $content -}}
     {{- $content = replaceRE ` (class=" *?")` "" $content -}}
     {{- highlight (trim $content "\n") $lang "" -}}
   {{- end -}}
